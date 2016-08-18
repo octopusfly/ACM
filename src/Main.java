@@ -5,5 +5,5 @@
  * @author Zhang Yufei.
  */
 public class Main {
-
+	String s;
 }
