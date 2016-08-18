@@ -38,8 +38,6 @@ public class Main {
 			double dist_top = pow(i - x, 2) + pow(top - y, 2);
 			double dist_bottom = pow(i - x, 2) + pow(bottom - y, 2);
 
-			// System.out.println(i + " " + top);
-			// System.out.println(i + " " + bottom);
 			if (max - dist_top < -eps) {
 				max = dist_top;
 				max_x = i;
