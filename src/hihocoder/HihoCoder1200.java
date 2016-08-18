@@ -3,7 +3,7 @@ package hihocoder;
 import java.util.Scanner;
 
 /**
- * This is the ACM problem solving program for hihoCoder week 110.
+ * This is the ACM problem solving program for hihoCoder 1200.
  * 
  * @version 2016-08-13
  * @author Zhang Yufei.

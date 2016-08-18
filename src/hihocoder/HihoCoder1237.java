@@ -1,3 +1,4 @@
+package hihocoder;
 
 import static java.lang.Math.*;
 
@@ -9,7 +10,7 @@ import java.util.Scanner;
  * @version 2016-08-18
  * @author Zhang Yufei.
  */
-public class Main {
+public class HihoCoder1237 {
 	// input data.
 	private static double x, y;
 	private static double r;
@@ -38,8 +39,6 @@ public class Main {
 			double dist_top = pow(i - x, 2) + pow(top - y, 2);
 			double dist_bottom = pow(i - x, 2) + pow(bottom - y, 2);
 
-			// System.out.println(i + " " + top);
-			// System.out.println(i + " " + bottom);
 			if (max - dist_top < -eps) {
 				max = dist_top;
 				max_x = i;
