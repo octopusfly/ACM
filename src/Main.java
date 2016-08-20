@@ -19,7 +19,7 @@ public class Main {
     	for(int i = 2; i < 105000; i++) {
     		if(list[i] == 0) {
     			for(int j = 2; i * j < 105000; j++) {
-    				list[i * j] = 1
+    				list[i * j] = 1;
     			}
     		}
     	}
