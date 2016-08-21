@@ -1,12 +1,14 @@
+package hihocoder;
+
 import java.util.Scanner;
 
 /**
- * This is the ACM problem solving program for hihoCoder 1361.
+ * This is the ACM problem solving program for hihoCoder 1358.
  * 
  * @version 2016-08-21
  * @author Zhang Yufei
  */
-public class Main {
+public class HihoCoder1361 {
 	private static int[] tags = new int[26];
 	
 	public static void main(String[] args) {
