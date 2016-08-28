@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -8,7 +10,7 @@ import java.util.Scanner;
  * @version 2016-08-22
  * @author Zhang Yufei
  */
-public class Main {
+public class HihoCoder1238 {
 
 	// Input data.
 	private static int N, M;
