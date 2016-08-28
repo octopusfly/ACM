@@ -8,7 +8,7 @@ import java.util.Scanner;
  */
 public class Main {
 
-	// Input data
+	// Input data.
 	private static int N, M;
 
 	// The graph.
