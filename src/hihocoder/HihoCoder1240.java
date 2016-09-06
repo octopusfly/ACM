@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.util.Scanner;
 
 /**
@@ -6,7 +8,7 @@ import java.util.Scanner;
  * @version 2016-09-06
  * @author Zhang Yufei
  */
-public class Main {
+public class HihoCoder1240 {
 	// input data.
 	private static int N, T;
 
