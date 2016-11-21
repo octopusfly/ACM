@@ -2,171 +2,184 @@ import java.util.Scanner;
 
 /**
  * This is the ACM problem solving program for hihoCoder 1240.
+ * (Note: The precision is important(1e-9). 
  * 
- * @version 2016-09-06
+ * @version 2016-11-21
  * @author Zhang Yufei
  */
 public class Main {
-	// input data.
-	private static int N, T;
+    /**
+     * Code list used for encoding and decoding.
+     */
+    private static final char[] CODE = "0123456789bcdefghjkmnpqrstuvwxyz"
+            .toCharArray();
 
-	// image matrix.
-	private static int[][] imageA, imageB;
+    /**
+     * The coordinates.
+     */
+    private static class Coordinate {
+        double x;
+        double y;
+    }
 
-	// input.
-	private static Scanner scan = new Scanner(System.in);
+    /**
+     * The number of coordinates to encode.
+     */
+    private static int n;
 
-	/**
-	 * The main program.
-	 * 
-	 * @param args
-	 *            The command-line parameters.
-	 */
-	public static void main(String[] args) {
-		T = scan.nextInt();
-		for (int i = 0; i < T; i++) {
-			function();
-		}
-		scan.close();
-	}
+    /**
+     * The number of geohash codes to decode.
+     */
+    private static int m;
 
-	/**
-	 * This function deals with one test case;
-	 */
-	private static void function() {
-		N = scan.nextInt();
+    /**
+     * The coordinates list to encode.
+     */
+    private static Coordinate[] coors;
 
-		imageA = new int[N][N];
-		imageB = new int[N][N];
+    /**
+     * The geohash code list to decode.
+     */
+    private static String[] codes;
 
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				imageA[i][j] = scan.nextInt();
-			}
-		}
+    /**
+     * The main program.
+     */
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
 
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				imageB[i][j] = scan.nextInt();
-			}
-		}
+        coors = new Coordinate[n];
+        codes = new String[m];
 
-		if (check(0, 0, 0, 0, N)) {
-			System.out.println("Yes");
-		} else {
-			System.out.println("No");
-		}
-	}
+        for (int i = 0; i < n; i++) {
+            coors[i] = new Coordinate();
+            coors[i].x = scan.nextDouble();
+            coors[i].y = scan.nextDouble();
+        }
 
-	/**
-	 * This function check if the given two sub-images can transfer each other.
-	 * 
-	 * @param x1
-	 *            The x of the left-top position of the image A.
-	 * @param y1
-	 *            The y of the left-top position of the image A.
-	 * @param x2
-	 *            The x of the left-top position of the image B.
-	 * @param y2
-	 *            The y of the left-top position of the image B.
-	 * @param size
-	 * @return If the two images can transfer each other, returns
-	 *         <code>true</code>, or returns <code>false</code>.
-	 */
-	private static boolean check(int x1, int y1, int x2, int y2, int size) {
-		if (size % 2 == 0) {
-			int[][] area = new int[][] { { 0, 0 }, { 0, size / 2 }, { size / 2, 0 }, { size / 2, size / 2 } };
-			
-			// original.
-			if (check(x1 + area[0][0], y1 + area[0][1], x2 + area[0][0], y2 + area[0][1], size / 2)
-			 && check(x1 + area[1][0], y1 + area[1][1], x2 + area[1][0], y2 + area[1][1], size / 2)
-			 && check(x1 + area[2][0], y1 + area[2][1], x2 + area[2][0], y2 + area[2][1], size / 2)
-			 && check(x1 + area[3][0], y1 + area[3][1], x2 + area[3][0], y2 + area[3][1], size / 2)) {
-				return true;
-			}
+        for (int i = 0; i < m; i++) {
+            codes[i] = scan.next();
+        }
 
-			// 90 degree.
-			if (check(x1 + area[0][0], y1 + area[0][1], x2 + area[1][0], y2 + area[1][1], size / 2)
-			 && check(x1 + area[1][0], y1 + area[1][1], x2 + area[3][0], y2 + area[3][1], size / 2)
-			 && check(x1 + area[2][0], y1 + area[2][1], x2 + area[0][0], y2 + area[0][1], size / 2)
-			 && check(x1 + area[3][0], y1 + area[3][1], x2 + area[2][0], y2 + area[2][1], size / 2)) {
-				return true;
-			}
+        for (int i = 0; i < n; i++) {
+            encode(coors[i]);
+        }
+        for (int i = 0; i < m; i++) {
+            decode(codes[i]);
+        }
+        scan.close();
+    }
 
-			// 180 degree.
-			if (check(x1 + area[0][0], y1 + area[0][1], x2 + area[3][0], y2 + area[3][1], size / 2)
-			 && check(x1 + area[1][0], y1 + area[1][1], x2 + area[2][0], y2 + area[2][1], size / 2)
-			 && check(x1 + area[2][0], y1 + area[2][1], x2 + area[1][0], y2 + area[1][1], size / 2)
-			 && check(x1 + area[3][0], y1 + area[3][1], x2 + area[0][0], y2 + area[0][1], size / 2)) {
-				return true;
-			}
+    /**
+     * The function used to convert the coordinates into geohash codes.
+     * 
+     * @param coor
+     *            The coordinate to encode.
+     */
+    private static void encode(Coordinate coor) {
+        double latLeft = -90.0;
+        double latRight = 90.0;
+        double latMid = 0.0;
 
-			// 270 degree.
-			if (check(x1 + area[0][0], y1 + area[0][1], x2 + area[2][0], y2 + area[2][1], size / 2)
-			 && check(x1 + area[1][0], y1 + area[1][1], x2 + area[0][0], y2 + area[0][1], size / 2)
-			 && check(x1 + area[2][0], y1 + area[2][1], x2 + area[3][0], y2 + area[3][1], size / 2)
-			 && check(x1 + area[3][0], y1 + area[3][1], x2 + area[1][0], y2 + area[1][1], size / 2)) {
-				return true;
-			}
-		} else {
-			boolean result = true;
-			
-			// original.
-			for (int xa = x1, xb = x2; xa < x1 + size; xa++, xb++) {
-				for (int ya = y1, yb = y2; ya < y1 + size; ya++, yb++) {
-					if (imageA[xa][ya] != imageB[xb][yb]) {
-						result = false;
-					}
-				}
-			}
+        double lonLeft = -180.0;
+        double lonRight = 180.0;
+        double lonMid = 0.0;
 
-			if (result) {
-				return true;
-			}
+        int index = 0;
+        int indexCnt = 0;
 
-			// 90 degree.
-			result = true;
-			for (int xa = x1, yb = y2 + size - 1; xa < x1 + size; xa++, yb--) {
-				for (int ya = y1, xb = x2; ya < y1 + size; ya++, xb++) {
-					if (imageA[xa][ya] != imageB[xb][yb]) {
-						result = false;
-					}
-				}
-			}
+        for (int i = 0; i < 25; i++) {
+            index *= 2;
+            if (coor.y - lonMid > 1e-9) {
+                lonLeft = lonMid;
+                index += 1;
+            } else {
+                lonRight = lonMid;
+            }
+            lonMid = (lonLeft + lonRight) / 2;
+            indexCnt++;
+            if (indexCnt == 5) {
+                System.out.print(CODE[index]);
+                index = 0;
+                indexCnt = 0;
+            }
 
-			if (result) {
-				return true;
-			}
+            index *= 2;
+            if (coor.x - latMid > 1e-9) {
+                latLeft = latMid;
+                index += 1;
+            } else {
+                latRight = latMid;
+            }
+            latMid = (latLeft + latRight) / 2;
+            indexCnt++;
+            if (indexCnt == 5) {
+                System.out.print(CODE[index]);
+                index = 0;
+                indexCnt = 0;
+            }
 
-			// 180 degree.
-			result = true;
-			for (int xa = x1, xb = x2 + size - 1; xa < x1 + size; xa++, xb--) {
-				for (int ya = y1, yb = y2 + size - 1; ya < y1 + size; ya++, yb--) {
-					if (imageA[xa][ya] != imageB[xb][yb]) {
-						result = false;
-					}
-				}
-			}
+        }
 
-			if (result) {
-				return true;
-			}
+        System.out.println();
+    }
 
-			// 270 degree.
-			result = true;
-			for (int xa = x1, yb = y2; xa < x1 + size; xa++, yb++) {
-				for (int ya = y1, xb = x2 + size - 1; ya < y1 + size; ya++, xb--) {
-					if (imageA[xa][ya] != imageB[xb][yb]) {
-						result = false;
-					}
-				}
-			}
+    /**
+     * The function used to convert the geohash codes in the list
+     * <code> codes </code> into coordinates.
+     * 
+     * @param code
+     *            The code to decode.
+     */
+    private static void decode(String code) {
+        double latLeft = -90.0;
+        double latRight = 90.0;
+        double latMid = 0.0;
 
-			if (result) {
-				return true;
-			}
-		}
+        double lonLeft = -180.0;
+        double lonRight = 180.0;
+        double lonMid = 0.0;
 
-		return false;
-	}
+        char[] geoCodes = code.toCharArray();
+        int[] indexes = new int[geoCodes.length
+                * 5];
+
+        for (int i = 0; i < geoCodes.length; i++) {
+            int index = -1;
+            for (int j = 0; j < 32; j++) {
+                if (CODE[j] == geoCodes[i]) {
+                    index = j;
+                    break;
+                }
+            }
+
+            indexes[i * 5 + 0] = index / 16;
+            indexes[i * 5 + 1] = index % 16 / 8;
+            indexes[i * 5 + 2] = index % 8 / 4;
+            indexes[i * 5 + 3] = index % 4 / 2;
+            indexes[i * 5 + 4] = index % 2;
+        }
+
+        for (int i = 0; i < indexes.length; i += 2) {
+            if (indexes[i] == 0) {
+                lonRight = lonMid;
+            } else {
+                lonLeft = lonMid;
+            }
+            lonMid = (lonLeft + lonRight) / 2;
+            
+            if (indexes[i + 1] == 0) {
+                latRight = latMid;
+            } else {
+                latLeft = latMid;
+            }
+            latMid = (latLeft + latRight) / 2;
+        }
+
+        System.out.printf("%.6f %.6f\n", latMid,
+                lonMid);
+    }
+
 }
