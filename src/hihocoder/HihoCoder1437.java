@@ -4,7 +4,7 @@ import java.util.Scanner;
 import static java.lang.Math.*;
 
 /**
- * This is the ACM problem solving program for hihoCoder ???.
+ * This is the ACM problem solving program for hihoCoder 1437.
  * 
  * @version 2016-11-28
  * @author Zhang Yufei
