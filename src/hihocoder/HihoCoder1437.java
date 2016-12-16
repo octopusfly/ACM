@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.util.Scanner;
 import static java.lang.Math.*;
 
@@ -7,7 +9,7 @@ import static java.lang.Math.*;
  * @version 2016-11-28
  * @author Zhang Yufei
  */
-public class Main {
+public class HihoCoder1437 {
     /**
      * Code list used for encoding and decoding.
      */
