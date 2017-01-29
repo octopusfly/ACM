@@ -24,7 +24,7 @@ public class HihoCoder1358 {
 	/**
 	 * The main program.
 	 * 
-	 * @param The
+	 * @param args The
 	 *            command line parameters.
 	 */
 	public static void main(String[] args) {
