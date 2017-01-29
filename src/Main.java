@@ -1,127 +1,185 @@
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
 /**
- * This is the ACM problem solving program for hihoCoder 1238.
+ * This is the ACM problem solving program for hihoCoder 1240.
+ * (Note: The precision is important(1e-9). 
  * 
- * @version 2016-08-22
+ * @version 2016-11-21
  * @author Zhang Yufei
  */
 public class Main {
+    /**
+     * Code list used for encoding and decoding.
+     */
+    private static final char[] CODE = "0123456789bcdefghjkmnpqrstuvwxyz"
+            .toCharArray();
 
-	// Input data.
-	private static int N, M;
+    /**
+     * The coordinates.
+     */
+    private static class Coordinate {
+        double x;
+        double y;
+    }
 
-	/*
-	 * Using the hash map to record the graph. The element is the edge of graph,
-	 * the key is the destination vertex and value is the length of edge.
-	 */
-	private static HashMap<Integer, Integer>[] graph;
+    /**
+     * The number of coordinates to encode.
+     */
+    private static int n;
 
-	/*
-	 * Record the level and the number of vertexes in the sub-tree.
-	 */
-	private static long[] level;
-	private static long[] node;
+    /**
+     * The number of geohash codes to decode.
+     */
+    private static int m;
 
-	// The THD value.
-	private static long THD;
+    /**
+     * The coordinates list to encode.
+     */
+    private static Coordinate[] coors;
 
-	/**
-	 * The main program.
-	 * 
-	 * @param args
-	 *            The command line parameters.
-	 *
-	 */
-	@SuppressWarnings("unchecked")
-	public static void main(String[] args) {
-		Scanner scan = new Scanner(System.in);
+    /**
+     * The geohash code list to decode.
+     */
+    private static String[] codes;
 
-		N = scan.nextInt();
-		M = scan.nextInt();
+    /**
+     * The main program.
+     */
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
 
-		graph = new HashMap[N];
-		level = new long[N];
-		node = new long[N];
+        coors = new Coordinate[n];
+        codes = new String[m];
 
-		/*
-		 * Store the graph using adjacent list.
-		 */
-		for (int i = 0; i < N; i++) {
-			graph[i] = new HashMap<Integer, Integer>();
-			level[i] = 0;
-			node[i] = 0;
-		}
+        for (int i = 0; i < n; i++) {
+            coors[i] = new Coordinate();
+            coors[i].x = scan.nextDouble();
+            coors[i].y = scan.nextDouble();
+        }
 
-		for (int i = 0; i < N - 1; i++) {
-			int u, v, k;
-			u = scan.nextInt();
-			v = scan.nextInt();
-			k = scan.nextInt();
-			
-			u--;
-			v--;
-			
-			graph[u].put(v, k);
-			graph[v].put(u, k);
-		}
+        for (int i = 0; i < m; i++) {
+            codes[i] = scan.next();
+        }
 
-		/*
-		 * Compute the weight of every edge and get the THD value.
-		 */
-		THD = 0;
-		level[0] = 1;
-		getWeight(0);
+        for (int i = 0; i < n; i++) {
+            encode(coors[i]);
+        }
+        for (int i = 0; i < m; i++) {
+            decode(codes[i]);
+        }
+        scan.close();
+    }
 
-		/*
-		 * Get the operation and output the result.
-		 */
-		for (int i = 0; i < M; i++) {
-			String operation = scan.next();
+    /**
+     * The function used to convert the coordinates into geohash codes.
+     * 
+     * @param coor
+     *            The coordinate to encode.
+     */
+    private static void encode(Coordinate coor) {
+        double latLeft = -90.0;
+        double latRight = 90.0;
+        double latMid = 0.0;
 
-			if (operation.equals("EDIT")) {
-				int u, v, k;
-				u = scan.nextInt();
-				v = scan.nextInt();
-				k = scan.nextInt();
+        double lonLeft = -180.0;
+        double lonRight = 180.0;
+        double lonMid = 0.0;
 
-				u--;
-				v--;
-				
-				int child = level[u] < level[v] ? v : u;
-				THD -= node[child] * (N - node[child]) * graph[u].get(v);
-				graph[u].remove(v);
-				graph[v].remove(u);
-				graph[u].put(v, k);
-				graph[v].put(u, k);
-				THD += node[child] * (N - node[child]) * graph[u].get(v);
-			} else if (operation.equals("QUERY")) {
-				System.out.println(THD);
-			}
-		}
+        int index = 0;
+        int indexCnt = 0;
 
-		scan.close();
-	}
+        for (int i = 0; i < 25; i++) {
+            index *= 2;
+            if (coor.y - lonMid > 1e-9) {
+                lonLeft = lonMid;
+                index += 1;
+            } else {
+                lonRight = lonMid;
+            }
+            lonMid = (lonLeft + lonRight) / 2;
+            indexCnt++;
+            if (indexCnt == 5) {
+                System.out.print(CODE[index]);
+                index = 0;
+                indexCnt = 0;
+            }
 
-	/**
-	 * This function set the weight of the all edges using dfs.
-	 * 
-	 * @param cur
-	 *            The current index of vertex to operation.
-	 * @return The number of vertexes in the next iterator.
-	 */
-	private static void getWeight(int cur) {
-		node[cur] = 1;
-		for (Entry<Integer, Integer> e : graph[cur].entrySet()) {
-			int index = e.getKey();
-			if (level[index] == 0) {
-				level[index] = level[cur] + 1;
-				getWeight(index);
-				THD += e.getValue() * node[index] * (N - node[index]);
-				node[cur] += node[index];
-			}
-		}
-	}
+            index *= 2;
+            if (coor.x - latMid > 1e-9) {
+                latLeft = latMid;
+                index += 1;
+            } else {
+                latRight = latMid;
+            }
+            latMid = (latLeft + latRight) / 2;
+            indexCnt++;
+            if (indexCnt == 5) {
+                System.out.print(CODE[index]);
+                index = 0;
+                indexCnt = 0;
+            }
+
+        }
+
+        System.out.println();
+    }
+
+    /**
+     * The function used to convert the geohash codes in the list
+     * <code> codes </code> into coordinates.
+     * 
+     * @param code
+     *            The code to decode.
+     */
+    private static void decode(String code) {
+        double latLeft = -90.0;
+        double latRight = 90.0;
+        double latMid = 0.0;
+
+        double lonLeft = -180.0;
+        double lonRight = 180.0;
+        double lonMid = 0.0;
+
+        char[] geoCodes = code.toCharArray();
+        int[] indexes = new int[geoCodes.length
+                * 5];
+
+        for (int i = 0; i < geoCodes.length; i++) {
+            int index = -1;
+            for (int j = 0; j < 32; j++) {
+                if (CODE[j] == geoCodes[i]) {
+                    index = j;
+                    break;
+                }
+            }
+
+            indexes[i * 5 + 0] = index / 16;
+            indexes[i * 5 + 1] = index % 16 / 8;
+            indexes[i * 5 + 2] = index % 8 / 4;
+            indexes[i * 5 + 3] = index % 4 / 2;
+            indexes[i * 5 + 4] = index % 2;
+        }
+
+        for (int i = 0; i < indexes.length; i += 2) {
+            if (indexes[i] == 0) {
+                lonRight = lonMid;
+            } else {
+                lonLeft = lonMid;
+            }
+            lonMid = (lonLeft + lonRight) / 2;
+            
+            if (indexes[i + 1] == 0) {
+                latRight = latMid;
+            } else {
+                latLeft = latMid;
+            }
+            latMid = (latLeft + latRight) / 2;
+        }
+
+        System.out.printf("%.6f %.6f\n", latMid,
+                lonMid);
+    }
+
 }
