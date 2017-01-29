@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -7,7 +9,7 @@ import java.util.Stack;
  * @version 2016-12-31
  * @author Zhang Yufei
  */
-public class Main {
+public class HihoCoder1449 {
 	/**
 	 * The length of the input string.
 	 */
