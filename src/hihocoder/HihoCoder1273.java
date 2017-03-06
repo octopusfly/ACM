@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -7,7 +9,7 @@ import java.util.Scanner;
  * @version 2017-03-04
  * @author Zhang Yufei
  */
-public class Main {
+public class HihoCoder1273 {
 	/**
 	 * Input data.
 	 */
