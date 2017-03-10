@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.util.Scanner;
 
 /**
@@ -6,7 +8,7 @@ import java.util.Scanner;
  * @version 2017-03-10
  * @author Zhang Yufei
  */
-public class Main {
+public class HihoCoder1473 {
 	/**
 	 * The main program.
 	 * 
@@ -57,3 +59,4 @@ public class Main {
 		}
 	}
 }
+
