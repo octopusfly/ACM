@@ -11,21 +11,27 @@ import java.util.Scanner;
  */
 public class HihoCoder1309 {
 	/**
-	 * Record the task.
+	 * Record the task time.
 	 */
-	private static class Task implements Comparable<Task> {
-		int start;
-		int end;
-		boolean visited;
+	private static class TaskTime implements Comparable<TaskTime> {
+		static final int START = 0;
+		static final int END = 1;
+		
+		int time;
+		int tag;
 
 		@Override
-		public int compareTo(Task o) {
-			if (end > o.end) {
+		public int compareTo(TaskTime o) {
+			if(time > o.time) {
 				return 1;
-			} else if (end < o.end) {
+			} else if(time < o.time) {
 				return -1;
 			} else {
-				return 0;
+				if(tag == START) {
+					return 1;
+				} else {
+					return -1;
+				}
 			}
 		}
 	}
@@ -38,7 +44,7 @@ public class HihoCoder1309 {
 	/**
 	 * The task list.
 	 */
-	private static Task[] tasks;
+	private static TaskTime[] times;
 
 	/**
 	 * The main program.
@@ -51,42 +57,35 @@ public class HihoCoder1309 {
 
 		N = scan.nextInt();
 
-		tasks = new Task[N];
+		times = new TaskTime[2 * N];
 
-		for (int i = 0; i < N; i++) {
-			tasks[i] = new Task();
-			tasks[i].start = scan.nextInt();
-			tasks[i].end = scan.nextInt();
-			tasks[i].visited = false;
+		for (int i = 0; i < 2 * N; i += 2) {
+			times[i] = new TaskTime();
+			times[i].time = scan.nextInt();
+			times[i].tag = TaskTime.START;
+			times[i + 1] = new TaskTime();
+			times[i + 1].time = scan.nextInt();
+			times[i + 1].tag = TaskTime.END;
 		}
 
 		scan.close();
 
-		Arrays.sort(tasks);
+		Arrays.sort(times);
 		
-//		for(Task t : tasks) {
-//			System.out.print(t.end + " ");
-//		}
-//		System.out.println();
-		
+		int result = 0;
 		int ans = 0;
-		int count = 0;
-
-		while (count < N) {
-			Task cur = null;
-			ans++;
-			for (int i = 0; i < N; i++) {
-				if (!tasks[i].visited) {
-					if (cur == null
-							|| tasks[i].start >= cur.end) {
-						count++;
-						tasks[i].visited = true;
-						cur = tasks[i];
-					}
-				}
+		for(int i = 0; i < 2 * N; i++) {
+			if(times[i].tag == TaskTime.START) {
+				ans++;
+			} else {
+				ans--;
+			}
+			
+			if(result < ans) {
+				result = ans;
 			}
 		}
 		
-		System.out.println(ans);
+		System.out.println(result);
 	}
 }
