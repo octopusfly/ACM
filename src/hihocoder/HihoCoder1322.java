@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -8,7 +10,7 @@ import java.util.Scanner;
  * @version 2017-05-05
  * @author Zhang Yufei.
  */
-public class Main {
+public class HihoCoder1322 {
 	/**
 	 * The node in graph.
 	 */
