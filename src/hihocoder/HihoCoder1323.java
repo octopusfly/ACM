@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.util.Scanner;
 
 /**
@@ -6,7 +8,7 @@ import java.util.Scanner;
  * @version 2017-05-09
  * @author Zhang Yufei.
  */
-public class Main {
+public class HihoCoder1323 {
 	/**
 	 * Input data.
 	 */
@@ -58,7 +60,7 @@ public class Main {
 
 			}
 		}
-		
+
 		System.out.println(dp[0][length - 1]);
 	}
 
