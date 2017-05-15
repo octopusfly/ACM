@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.util.Scanner;
 
 /**
@@ -6,7 +8,7 @@ import java.util.Scanner;
  * @version 2017-05-15
  * @author Zhang Yufei.
  */
-public class Main {
+public class HihoCoder1290 {
 	/**
 	 * Record the information of each grid.
 	 */
