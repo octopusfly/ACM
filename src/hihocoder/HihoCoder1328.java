@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.util.Scanner;
 
 /**
@@ -6,7 +8,7 @@ import java.util.Scanner;
  * @version 2017-06-10
  * @author Zhang Yufei.
  */
-public class Main {
+public class HihoCoder1328 {
 	/**
 	 * Record the room information.
 	 */
