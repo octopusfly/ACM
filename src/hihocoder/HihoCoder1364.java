@@ -1,3 +1,5 @@
+package hihocoder;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.Scanner;
  * @version 2018-03-24
  * @author Zhang Yufei.
  */
-public class Main {
+public class HihoCoder1364 {
     /**
      * Record the commodity information.
      */
@@ -149,3 +151,4 @@ public class Main {
         writer.close();
     }
 }
+
